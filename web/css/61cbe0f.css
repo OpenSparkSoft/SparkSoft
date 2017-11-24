@@ -1,0 +1,19 @@
+footer {
+    background-color: #007bff;
+    padding-top: 2em;
+    color: white;
+    margin-top: 3em;
+}
+
+footer a {
+    color: white;
+}
+
+footer a:hover {
+    color: black;
+}
+
+footer img {
+    background-color: white;
+    border-radius: 50%;
+}
