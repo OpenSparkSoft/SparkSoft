@@ -61,7 +61,7 @@ var SparkSoft =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,28 +70,8 @@ var SparkSoft =
 
 "use strict";
 
-/**
- * Created by Grimbode on 02/12/2017.
- */
 exports.__esModule = true;
-var Point = /** @class */ (function () {
-    function Point(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    return Point;
-}());
-exports.Point = Point;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var util_service_1 = __webpack_require__(2);
+var util_service_1 = __webpack_require__(1);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -108,13 +88,13 @@ exports.System = System;
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var vertex_entity_1 = __webpack_require__(8);
+var vertex_entity_1 = __webpack_require__(7);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -144,8 +124,27 @@ exports.GetRandomColor = GetRandomColor;
 
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by Grimbode on 02/12/2017.
+ */
+exports.__esModule = true;
+var Point = /** @class */ (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Point;
+}());
+exports.Point = Point;
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -154,7 +153,7 @@ exports.__esModule = true;
 /**
  * Created by Grimbode on 21/11/2017.
  */
-var app_1 = __webpack_require__(5);
+var app_1 = __webpack_require__(4);
 var module;
 /**
  * Created by kfaulhaber on 30/06/2017.
@@ -167,13 +166,13 @@ module.exports = app_1.App;
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var game_service_1 = __webpack_require__(6);
+var game_service_1 = __webpack_require__(5);
 var App = /** @class */ (function () {
     function App(canvasId) {
         var _this = this;
@@ -210,17 +209,17 @@ exports.App = App;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var polygon_entity_1 = __webpack_require__(7);
-var util_service_1 = __webpack_require__(2);
-var system_entity_1 = __webpack_require__(1);
-var point_entity_1 = __webpack_require__(0);
-var orbit_entity_1 = __webpack_require__(9);
+var polygon_entity_1 = __webpack_require__(6);
+var util_service_1 = __webpack_require__(1);
+var system_entity_1 = __webpack_require__(0);
+var point_entity_1 = __webpack_require__(2);
+var orbit_entity_1 = __webpack_require__(8);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -401,7 +400,7 @@ exports.GameService = GameService;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -417,7 +416,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var system_entity_1 = __webpack_require__(1);
+var system_entity_1 = __webpack_require__(0);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -444,6 +443,34 @@ exports.Polygon = Polygon;
 
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var point_entity_1 = __webpack_require__(2);
+var Vertex = /** @class */ (function (_super) {
+    __extends(Vertex, _super);
+    function Vertex(x, y) {
+        return _super.call(this, x, y) || this;
+    }
+    return Vertex;
+}(point_entity_1.Point));
+exports.Vertex = Vertex;
+
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -460,35 +487,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var point_entity_1 = __webpack_require__(0);
-var Vertex = /** @class */ (function (_super) {
-    __extends(Vertex, _super);
-    function Vertex(x, y) {
-        return _super.call(this, x, y) || this;
-    }
-    return Vertex;
-}(point_entity_1.Point));
-exports.Vertex = Vertex;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
-var circle_entity_1 = __webpack_require__(10);
+var circle_entity_1 = __webpack_require__(9);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -507,7 +506,7 @@ exports.Orbit = Orbit;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
