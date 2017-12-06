@@ -1,0 +1,26 @@
+{
+  "name": "spark-soft",
+  "version": "0.0.1",
+  "description": "Spark Soft Polygon Play.",
+  "main": "",
+  "homepage": "https://github.com/OpenSparkSoft/SparkSoft#readme",
+  "repository" : {
+    "type" : "git",
+    "url" : "git@github.com:OpenSparkSoft/SparkSoft.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OpenSparkSoft/SparkSoft/issues"
+  },
+  "keywords": [
+    "typescript",
+    "polygon"
+  ],
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.1.2",
+    "typescript": "^2.2.2",
+    "webpack": "^3.3.0"
+  },
+  "author": "Kevin Faulhaber",
+  "contributors": [],
+  "license": "Apache 2.0"
+}

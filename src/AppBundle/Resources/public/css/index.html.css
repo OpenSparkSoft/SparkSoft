@@ -2,3 +2,10 @@
     margin-top: 2em;
     margin-bottom: 2em;
 }
+
+#canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}

@@ -8,7 +8,8 @@
 
 {% block body %}
     <div id="animation_data"></div>
-    <canvas id="animation"></canvas>
+    <canvas id="canvas"></canvas>
+    {#
     <div class="container">
 
         <h1 id="title" class="display-1 text-center">Spark<span class="text-muted">Soft</span></h1>
@@ -182,17 +183,21 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>#}
 
 {% endblock %}
 
 {% block javascripts %}
 
-    {% javascripts '@AppBundle/Resources/public/js/sparksoft.canvas.js'%}
+    {% javascripts '@AppBundle/Resources/public/js/dist/polygon.sparksoft.js'%}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     <script>
+
+        //Initiating library.
+        new SparkSoft("canvas");
+
         $(document).ready(function () {
             $('[data-toggle="popover"]').popover({ trigger: 'hover' });
         });
