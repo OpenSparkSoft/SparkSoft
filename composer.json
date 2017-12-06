@@ -66,6 +66,11 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },
-        "branch-alias": null
+        "branch-alias": null,
+        "paas": {
+            "compile": [
+                "php app/console assetic:dump --env=prod --no-debug"
+            ]
+        }
     }
 }
