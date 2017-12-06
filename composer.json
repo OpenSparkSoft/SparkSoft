@@ -69,7 +69,7 @@
         "branch-alias": null,
         "paas": {
             "compile": [
-                "php app/console assetic:dump --env=prod --no-debug"
+                "php bin/console assetic:dump --env=prod --no-debug"
             ]
         }
     }
