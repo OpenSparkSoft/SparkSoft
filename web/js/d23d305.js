@@ -70,28 +70,8 @@ var SparkSoft =
 
 "use strict";
 
-/**
- * Created by Grimbode on 02/12/2017.
- */
 exports.__esModule = true;
-var Point = /** @class */ (function () {
-    function Point(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    return Point;
-}());
-exports.Point = Point;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var util_service_1 = __webpack_require__(2);
+var util_service_1 = __webpack_require__(1);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -99,6 +79,7 @@ var System = /** @class */ (function () {
     function System(point) {
         this.point = point;
         this.planets = [];
+        this.sun = null;
         //TODO: Fix these values
         this.sentinelOrbitDistance = util_service_1.GetRandomArbitrary(100, 20);
     }
@@ -108,7 +89,7 @@ exports.System = System;
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -144,7 +125,43 @@ exports.GetRandomColor = GetRandomColor;
 
 
 /***/ }),
-/* 3 */,
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by Grimbode on 02/12/2017.
+ */
+exports.__esModule = true;
+var Point = /** @class */ (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Point;
+}());
+exports.Point = Point;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var Circle = /** @class */ (function () {
+    function Circle(origin, radius) {
+        this.origin = origin;
+        this.radius = radius;
+    }
+    return Circle;
+}());
+exports.Circle = Circle;
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -217,10 +234,11 @@ exports.App = App;
 
 exports.__esModule = true;
 var polygon_entity_1 = __webpack_require__(7);
-var util_service_1 = __webpack_require__(2);
-var system_entity_1 = __webpack_require__(1);
-var point_entity_1 = __webpack_require__(0);
+var util_service_1 = __webpack_require__(1);
+var system_entity_1 = __webpack_require__(0);
+var point_entity_1 = __webpack_require__(2);
 var orbit_entity_1 = __webpack_require__(9);
+var circle_entity_1 = __webpack_require__(3);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -248,7 +266,6 @@ var GameService = /** @class */ (function () {
             _this.ctx.translate(planet.orbit.origin.x, planet.orbit.origin.y);
             var diameter = planet.radius * 2;
             _this.ctx.clearRect(Math.floor(planet.point.x - diameter), Math.floor(planet.point.y - diameter), Math.ceil(diameter * 2), Math.ceil(diameter * 2));
-            //this.orbitClear(planet.orbit);
             if (planet.planets.length > 0) {
                 planet.planets.forEach(_this.recursiveClear);
             }
@@ -274,31 +291,33 @@ var GameService = /** @class */ (function () {
     };
     GameService.prototype.createSystem = function () {
         var point = new point_entity_1.Point(util_service_1.GetRandomArbitrary(this.canvas.offsetWidth), util_service_1.GetRandomArbitrary(this.canvas.offsetHeight));
+        var sun = new circle_entity_1.Circle(point, util_service_1.GetRandomArbitrary(100, 80));
         console.log("System point: " + point.x + ", " + point.y);
-        this.systems.push(new system_entity_1.System(point));
+        var system = new system_entity_1.System(point);
+        system.sun = sun;
+        this.systems.push(system);
     };
     GameService.prototype.createPlanets = function (system, inception) {
         if (inception === void 0) { inception = 0; }
         var planetCount = util_service_1.GetRandomArbitrary(this.initialPlanetCount + 1, 1);
         for (var i = 0; i < planetCount; i++) {
-            var orbitRadiusMax = 100;
-            var orbitRadiusMin = 80;
-            if (system instanceof polygon_entity_1.Polygon) {
-                //also a planet
-                console.log("We are in");
-                orbitRadiusMax = system.radius + system.radius / 2;
-                orbitRadiusMin = system.radius + 1;
-            }
-            this.createPlanet(system, orbitRadiusMax, orbitRadiusMin);
+            var offset = system instanceof polygon_entity_1.Polygon
+                ? system.radius + system.radius * 0.5
+                : system.sun.radius + system.sun.radius * 0.5;
+            var orbitRadiusMin = void 0, orbitRadiusMax = void 0;
+            orbitRadiusMax = orbitRadiusMin
+                = system.planets.length > 0
+                    ? system.planets[system.planets.length - 1].orbit.radius + offset
+                    : offset;
+            this.createPlanet(system, util_service_1.GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin));
             if (inception > 0 && system.planets.length > 0) {
                 this.createPlanets(system.planets[system.planets.length - 1], inception - 1);
             }
         }
     };
-    GameService.prototype.createPlanet = function (system, orbitRadiusMax, orbitRadiusMin) {
-        system.sentinelOrbitDistance += util_service_1.GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin);
+    GameService.prototype.createPlanet = function (system, radius) {
         var initAngle = util_service_1.GetRandomArbitrary(2 * Math.PI);
-        var orbit = new orbit_entity_1.Orbit(system.point, system.sentinelOrbitDistance, initAngle, util_service_1.GetRandomArbitrary(2) == 0, util_service_1.GetRandomArbitrary(100) / 10000);
+        var orbit = new orbit_entity_1.Orbit(system.point, radius, initAngle, util_service_1.GetRandomArbitrary(2) == 0, util_service_1.GetRandomArbitrary(100) / 10000);
         var point = new point_entity_1.Point((orbit.radius) * Math.cos(util_service_1.GetRandomArbitrary(orbit.angle)), (orbit.radius) * Math.sin(util_service_1.GetRandomArbitrary(orbit.angle)));
         var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomColor());
         console.log(polygon.color);
@@ -340,21 +359,17 @@ var GameService = /** @class */ (function () {
         var delta = now - this.then;
         if (delta > this.interval) {
             this.then = now - (delta % this.interval);
+            //TODO: divide this into regions, for optimization.
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             /*this.systems.forEach((system: System) => {
                 system.planets.forEach(this.recursiveClear);
             });*/
             //Draw stuff here.
             this.systems.forEach(function (system) {
+                _this.drawCircle(system.sun);
                 _this.systemInception(system);
             });
         }
-    };
-    //TODO: Fix and understand "destination-out"
-    GameService.prototype.orbitClear = function (orbit) {
-        this.ctx.globalCompositeOperation = "destination-out";
-        this.ctx.arc(0, 0, orbit.radius + 1, 0, 2 * Math.PI);
-        this.ctx.fill();
     };
     GameService.prototype.systemInception = function (system) {
         var _this = this;
@@ -395,6 +410,12 @@ var GameService = /** @class */ (function () {
         this.ctx.fill();
         this.ctx.restore();
     };
+    GameService.prototype.drawCircle = function (circle) {
+        this.ctx.beginPath();
+        this.ctx.arc(circle.origin.x, circle.origin.y, circle.radius, 0, 2 * Math.PI);
+        this.ctx.fillStyle = "yellow";
+        this.ctx.fill();
+    };
     return GameService;
 }());
 exports.GameService = GameService;
@@ -417,7 +438,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var system_entity_1 = __webpack_require__(1);
+var system_entity_1 = __webpack_require__(0);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -460,7 +481,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var point_entity_1 = __webpack_require__(0);
+var point_entity_1 = __webpack_require__(2);
 var Vertex = /** @class */ (function (_super) {
     __extends(Vertex, _super);
     function Vertex(x, y) {
@@ -488,7 +509,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var circle_entity_1 = __webpack_require__(10);
+var circle_entity_1 = __webpack_require__(3);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -504,23 +525,6 @@ var Orbit = /** @class */ (function (_super) {
     return Orbit;
 }(circle_entity_1.Circle));
 exports.Orbit = Orbit;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-exports.__esModule = true;
-var Circle = /** @class */ (function () {
-    function Circle(origin, radius) {
-        this.origin = origin;
-        this.radius = radius;
-    }
-    return Circle;
-}());
-exports.Circle = Circle;
 
 
 /***/ })

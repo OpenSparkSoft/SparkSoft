@@ -1,5 +1,5 @@
 import {Point} from "./point.entity";
-export abstract class Circle {
+export class Circle {
     constructor(
         public origin: Point,
         public radius: number

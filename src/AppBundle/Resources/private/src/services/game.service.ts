@@ -6,6 +6,7 @@ import {
 import {System} from "../entities/system.entity";
 import {Point} from "../entities/point.entity";
 import {Orbit} from "../entities/orbit.entity";
+import {Circle} from "../entities/circle.entity";
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -51,24 +52,28 @@ export class GameService {
             GetRandomArbitrary(this.canvas.offsetWidth),
             GetRandomArbitrary(this.canvas.offsetHeight)
         );
+        let sun = new Circle(point, GetRandomArbitrary(100, 80));
         console.log(`System point: ${point.x}, ${point.y}`);
-        this.systems.push(new System(point));
+        let system =new System(point);
+        system.sun = sun;
+        this.systems.push(system);
     }
 
     private createPlanets(system: System, inception: number = 0){
         let planetCount = GetRandomArbitrary(this.initialPlanetCount+1,1);
         for(let i = 0; i < planetCount; i++){
 
-            let orbitRadiusMax = 100;
-            let orbitRadiusMin = 80;
-            if(system instanceof Polygon){
-                //also a planet
-                console.log("We are in")
-                orbitRadiusMax = system.radius + system.radius/2;
-                orbitRadiusMin = system.radius + 1;
-            }
+            let offset = system instanceof Polygon
+                ? system.radius + system.radius*0.5
+                : system.sun.radius + system.sun.radius*0.5
 
-            this.createPlanet(system, orbitRadiusMax, orbitRadiusMin);
+            let orbitRadiusMin, orbitRadiusMax;
+            orbitRadiusMax = orbitRadiusMin
+                = system.planets.length > 0
+                ? system.planets[system.planets.length-1].orbit.radius + offset
+                : offset;
+
+            this.createPlanet(system, GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin));
 
             if(inception > 0 && system.planets.length > 0){
                 this.createPlanets(system.planets[system.planets.length-1], inception-1)
@@ -76,12 +81,11 @@ export class GameService {
         }
     }
 
-    private createPlanet(system: System, orbitRadiusMax: number, orbitRadiusMin: number) {
-        system.sentinelOrbitDistance += GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin);
+    private createPlanet(system: System, radius: number) {
         let initAngle = GetRandomArbitrary(2*Math.PI);
         let orbit = new Orbit(
             system.point,
-            system.sentinelOrbitDistance,
+            radius,
             initAngle,
             GetRandomArbitrary(2) == 0,
             GetRandomArbitrary(100)/10000
@@ -155,13 +159,16 @@ export class GameService {
         if(delta > this.interval){
             this.then = now - (delta % this.interval);
 
+            //TODO: divide this into regions, for optimization.
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
             /*this.systems.forEach((system: System) => {
                 system.planets.forEach(this.recursiveClear);
             });*/
 
             //Draw stuff here.
             this.systems.forEach((system: System)=>{
+                this.drawCircle(system.sun);
                 this.systemInception(system);
             });
         }
@@ -177,7 +184,6 @@ export class GameService {
             Math.ceil(diameter*2),
             Math.ceil(diameter*2)
         );
-        //this.orbitClear(planet.orbit);
 
         if(planet.planets.length > 0){
             planet.planets.forEach(this.recursiveClear);
@@ -186,13 +192,6 @@ export class GameService {
 
 
     };
-
-    //TODO: Fix and understand "destination-out"
-    private orbitClear(orbit: Orbit){
-        this.ctx.globalCompositeOperation = "destination-out";
-        this.ctx.arc(0,0, orbit.radius+1, 0, 2*Math.PI);
-        this.ctx.fill();
-    }
 
     private systemInception(system: System){
         this.ctx.save();
@@ -232,5 +231,12 @@ export class GameService {
         this.ctx.fillStyle = polygon.color;
         this.ctx.fill();
         this.ctx.restore();
+    }
+
+    private drawCircle(circle: Circle){
+        this.ctx.beginPath();
+        this.ctx.arc(circle.origin.x, circle.origin.y, circle.radius, 0, 2*Math.PI);
+        this.ctx.fillStyle = "yellow";
+        this.ctx.fill();
     }
 }
