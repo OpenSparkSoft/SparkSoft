@@ -7,6 +7,8 @@ import {System} from "../entities/system.entity";
 import {Point} from "../entities/point.entity";
 import {Orbit} from "../entities/orbit.entity";
 import {Circle} from "../entities/circle.entity";
+import {Direction} from "../enums/direction.enum";
+import {Sun} from "../entities/sun.entity";
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -35,24 +37,30 @@ export class GameService {
         this.createSystems();
 
         this.systems.forEach((system: System)=>{
-            this.createPlanets(system, this.inception);
+            this.createPlanets(system, GetRandomArbitrary(this.inception+1, 1));
         });
         this.loop();
 
     }
 
     private createSystems(){
-        for(let i = 0; i < this.initialSystemCount; i++){
+        let systemCount = GetRandomArbitrary(this.initialSystemCount, 1);
+        for(let i = 0; i < systemCount; i++){
             this.createSystem()
         }
     }
 
     private createSystem(){
+
         let point = new Point(
             GetRandomArbitrary(this.canvas.offsetWidth),
             GetRandomArbitrary(this.canvas.offsetHeight)
         );
-        let sun = new Circle(point, GetRandomArbitrary(100, 80));
+        let radius =GetRandomArbitrary(100, 20);
+        let gradient = this.ctx.createRadialGradient(point.x, point.y, GetRandomArbitrary(radius/2), point.x, point.y, radius);
+        gradient.addColorStop(0, "yellow");
+        gradient.addColorStop(1, "orange");
+        let sun = new Sun(point, radius, gradient);
         console.log(`System point: ${point.x}, ${point.y}`);
         let system =new System(point);
         system.sun = sun;
@@ -60,7 +68,7 @@ export class GameService {
     }
 
     private createPlanets(system: System, inception: number = 0){
-        let planetCount = GetRandomArbitrary(this.initialPlanetCount+1,1);
+        let planetCount = GetRandomArbitrary(this.initialPlanetCount+1, 0);
         for(let i = 0; i < planetCount; i++){
 
             let offset = system instanceof Polygon
@@ -87,7 +95,7 @@ export class GameService {
             system.point,
             radius,
             initAngle,
-            GetRandomArbitrary(2) == 0,
+            GetRandomArbitrary(2, 0) == 0 ? Direction.ClockWise : Direction.CounterClockwise,
             GetRandomArbitrary(100)/10000
         );
 
@@ -99,7 +107,9 @@ export class GameService {
         let polygon = new Polygon(
             point,
             GetRandomArbitrary(orbit.radius*.2),
-            GetRandomColor()
+            GetRandomColor(),
+            GetRandomArbitrary(0.1, 0, false),
+            GetRandomArbitrary(2,0) == 0 ? Direction.ClockWise : Direction.CounterClockwise
         );
 
         console.log(polygon.color);
@@ -132,12 +142,17 @@ export class GameService {
     private updateSystemInception(system: System){
         system.planets.forEach((planet: Polygon)=>{
 
-            planet.orbit.angle = (planet.orbit.angle + (planet.orbit.aDirection ? planet.orbit.speed : -planet.orbit.speed)) % (Math.PI*2);
+            //Applying planet rotation
+            planet.angles = planet.angles.map(angle => {
+                return (planet.rotationDirection*planet.rotationSpeed+angle) % (Math.PI*2)
+            });
+
+            planet.orbit.angle = (planet.orbit.angle + (planet.orbit.aDirection*planet.orbit.speed )) % (Math.PI*2);
 
             planet.point.x = (planet.orbit.radius)*Math.cos(planet.orbit.angle);
             planet.point.y = (planet.orbit.radius)*Math.sin(planet.orbit.angle);
 
-            let distance = DistanceBetweenTwoPoints(planet.point, new Point(0,0))
+            let distance = DistanceBetweenTwoPoints(planet.point, new Point(0,0));
             if(Math.abs(distance - planet.orbit.radius) > 1){
                 console.warn(`
                     Radius different: Calc ${distance} != Origin Radius ${planet.orbit.radius}, \n
@@ -233,10 +248,10 @@ export class GameService {
         this.ctx.restore();
     }
 
-    private drawCircle(circle: Circle){
+    private drawCircle(sun: Sun){
         this.ctx.beginPath();
-        this.ctx.arc(circle.origin.x, circle.origin.y, circle.radius, 0, 2*Math.PI);
-        this.ctx.fillStyle = "yellow";
+        this.ctx.arc(sun.origin.x, sun.origin.y, sun.radius, 0, 2*Math.PI);
+        this.ctx.fillStyle = sun.color;
         this.ctx.fill();
     }
 }

@@ -200,7 +200,7 @@ var App = /** @class */ (function () {
             if (!_this.canvasElement)
                 return console.warn("No canvas element found.");
             _this.resize(function () {
-                _this.game = new game_service_1.GameService(_this.canvasElement, 3, 3, 1);
+                _this.game = new game_service_1.GameService(_this.canvasElement, 8, 3, 3);
             });
         };
         this.resize = function (callback) {
@@ -238,7 +238,8 @@ var util_service_1 = __webpack_require__(1);
 var system_entity_1 = __webpack_require__(0);
 var point_entity_1 = __webpack_require__(2);
 var orbit_entity_1 = __webpack_require__(9);
-var circle_entity_1 = __webpack_require__(3);
+var direction_enum_1 = __webpack_require__(10);
+var sun_entity_1 = __webpack_require__(11);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -280,18 +281,23 @@ var GameService = /** @class */ (function () {
         this.systems = [];
         this.createSystems();
         this.systems.forEach(function (system) {
-            _this.createPlanets(system, _this.inception);
+            _this.createPlanets(system, util_service_1.GetRandomArbitrary(_this.inception + 1, 1));
         });
         this.loop();
     };
     GameService.prototype.createSystems = function () {
-        for (var i = 0; i < this.initialSystemCount; i++) {
+        var systemCount = util_service_1.GetRandomArbitrary(this.initialSystemCount, 1);
+        for (var i = 0; i < systemCount; i++) {
             this.createSystem();
         }
     };
     GameService.prototype.createSystem = function () {
         var point = new point_entity_1.Point(util_service_1.GetRandomArbitrary(this.canvas.offsetWidth), util_service_1.GetRandomArbitrary(this.canvas.offsetHeight));
-        var sun = new circle_entity_1.Circle(point, util_service_1.GetRandomArbitrary(100, 80));
+        var radius = util_service_1.GetRandomArbitrary(100, 20);
+        var gradient = this.ctx.createRadialGradient(point.x, point.y, util_service_1.GetRandomArbitrary(radius / 2), point.x, point.y, radius);
+        gradient.addColorStop(0, "yellow");
+        gradient.addColorStop(1, "orange");
+        var sun = new sun_entity_1.Sun(point, radius, gradient);
         console.log("System point: " + point.x + ", " + point.y);
         var system = new system_entity_1.System(point);
         system.sun = sun;
@@ -299,7 +305,7 @@ var GameService = /** @class */ (function () {
     };
     GameService.prototype.createPlanets = function (system, inception) {
         if (inception === void 0) { inception = 0; }
-        var planetCount = util_service_1.GetRandomArbitrary(this.initialPlanetCount + 1, 1);
+        var planetCount = util_service_1.GetRandomArbitrary(this.initialPlanetCount + 1, 0);
         for (var i = 0; i < planetCount; i++) {
             var offset = system instanceof polygon_entity_1.Polygon
                 ? system.radius + system.radius * 0.5
@@ -317,9 +323,9 @@ var GameService = /** @class */ (function () {
     };
     GameService.prototype.createPlanet = function (system, radius) {
         var initAngle = util_service_1.GetRandomArbitrary(2 * Math.PI);
-        var orbit = new orbit_entity_1.Orbit(system.point, radius, initAngle, util_service_1.GetRandomArbitrary(2) == 0, util_service_1.GetRandomArbitrary(100) / 10000);
+        var orbit = new orbit_entity_1.Orbit(system.point, radius, initAngle, util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise, util_service_1.GetRandomArbitrary(100) / 10000);
         var point = new point_entity_1.Point((orbit.radius) * Math.cos(util_service_1.GetRandomArbitrary(orbit.angle)), (orbit.radius) * Math.sin(util_service_1.GetRandomArbitrary(orbit.angle)));
-        var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomColor());
+        var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomColor(), util_service_1.GetRandomArbitrary(0.1, 0, false), util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise);
         console.log(polygon.color);
         this.populateWithAngles(polygon);
         polygon.orbit = orbit;
@@ -341,7 +347,11 @@ var GameService = /** @class */ (function () {
     GameService.prototype.updateSystemInception = function (system) {
         var _this = this;
         system.planets.forEach(function (planet) {
-            planet.orbit.angle = (planet.orbit.angle + (planet.orbit.aDirection ? planet.orbit.speed : -planet.orbit.speed)) % (Math.PI * 2);
+            //Applying planet rotation
+            planet.angles = planet.angles.map(function (angle) {
+                return (planet.rotationDirection * planet.rotationSpeed + angle) % (Math.PI * 2);
+            });
+            planet.orbit.angle = (planet.orbit.angle + (planet.orbit.aDirection * planet.orbit.speed)) % (Math.PI * 2);
             planet.point.x = (planet.orbit.radius) * Math.cos(planet.orbit.angle);
             planet.point.y = (planet.orbit.radius) * Math.sin(planet.orbit.angle);
             var distance = util_service_1.DistanceBetweenTwoPoints(planet.point, new point_entity_1.Point(0, 0));
@@ -410,10 +420,10 @@ var GameService = /** @class */ (function () {
         this.ctx.fill();
         this.ctx.restore();
     };
-    GameService.prototype.drawCircle = function (circle) {
+    GameService.prototype.drawCircle = function (sun) {
         this.ctx.beginPath();
-        this.ctx.arc(circle.origin.x, circle.origin.y, circle.radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = "yellow";
+        this.ctx.arc(sun.origin.x, sun.origin.y, sun.radius, 0, 2 * Math.PI);
+        this.ctx.fillStyle = sun.color;
         this.ctx.fill();
     };
     return GameService;
@@ -439,14 +449,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var system_entity_1 = __webpack_require__(0);
+var direction_enum_1 = __webpack_require__(10);
 /**
  * Created by Grimbode on 02/12/2017.
  */
 var Polygon = /** @class */ (function (_super) {
     __extends(Polygon, _super);
     function Polygon(point, radius, color, rotationSpeed, rotationDirection) {
-        if (rotationSpeed === void 0) { rotationSpeed = 10; }
-        if (rotationDirection === void 0) { rotationDirection = true; }
+        if (rotationSpeed === void 0) { rotationSpeed = 1; }
+        if (rotationDirection === void 0) { rotationDirection = direction_enum_1.Direction.ClockWise; }
         var _this = _super.call(this, point) || this;
         _this.point = point;
         _this.radius = radius;
@@ -525,6 +536,56 @@ var Orbit = /** @class */ (function (_super) {
     return Orbit;
 }(circle_entity_1.Circle));
 exports.Orbit = Orbit;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by Grimbode on 07/12/2017.
+ */
+exports.__esModule = true;
+var Direction;
+(function (Direction) {
+    Direction[Direction["ClockWise"] = 1] = "ClockWise";
+    Direction[Direction["CounterClockwise"] = -1] = "CounterClockwise";
+})(Direction = exports.Direction || (exports.Direction = {}));
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by Grimbode on 07/12/2017.
+ */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+var circle_entity_1 = __webpack_require__(3);
+var Sun = /** @class */ (function (_super) {
+    __extends(Sun, _super);
+    function Sun(point, radius, color) {
+        var _this = _super.call(this, point, radius) || this;
+        _this.color = color;
+        return _this;
+    }
+    return Sun;
+}(circle_entity_1.Circle));
+exports.Sun = Sun;
 
 
 /***/ })

@@ -17,7 +17,8 @@ export class App {
         this.canvasElement = <HTMLCanvasElement>document.getElementById(this.canvasId);
         if(!this.canvasElement) return console.warn("No canvas element found.");
         this.resize(()=>{
-            this.game = new GameService(this.canvasElement , 3, 3, 1);
+            this.game = new GameService(this.canvasElement , 8, 3, 3);
+
         });
 
     };
