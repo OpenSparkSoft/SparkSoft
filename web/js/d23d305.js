@@ -388,7 +388,7 @@ var GameService = /** @class */ (function () {
     GameService.prototype.drawOrbit = function (orbit) {
         this.ctx.beginPath();
         this.ctx.arc(0, 0, orbit.radius, 0, 2 * Math.PI);
-        this.ctx.strokeStyle = "black";
+        this.ctx.strokeStyle = "#d3d3d3";
         this.ctx.stroke();
     };
     GameService.prototype.drawPolygon = function (polygon) {
