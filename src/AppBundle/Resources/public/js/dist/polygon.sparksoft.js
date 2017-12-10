@@ -61,7 +61,7 @@ var SparkSoft =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -95,7 +95,7 @@ exports.System = System;
 "use strict";
 
 exports.__esModule = true;
-var vertex_entity_1 = __webpack_require__(8);
+var vertex_entity_1 = __webpack_require__(9);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -150,6 +150,23 @@ exports.Point = Point;
 
 "use strict";
 
+/**
+ * Created by Grimbode on 07/12/2017.
+ */
+exports.__esModule = true;
+var Direction;
+(function (Direction) {
+    Direction[Direction["ClockWise"] = 1] = "ClockWise";
+    Direction[Direction["CounterClockwise"] = -1] = "CounterClockwise";
+})(Direction = exports.Direction || (exports.Direction = {}));
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 exports.__esModule = true;
 var Circle = /** @class */ (function () {
     function Circle(origin, radius) {
@@ -162,7 +179,7 @@ exports.Circle = Circle;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -171,7 +188,7 @@ exports.__esModule = true;
 /**
  * Created by Grimbode on 21/11/2017.
  */
-var app_1 = __webpack_require__(5);
+var app_1 = __webpack_require__(6);
 var module;
 /**
  * Created by kfaulhaber on 30/06/2017.
@@ -184,13 +201,13 @@ module.exports = app_1.App;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var game_service_1 = __webpack_require__(6);
+var game_service_1 = __webpack_require__(7);
 var App = /** @class */ (function () {
     function App(canvasId) {
         var _this = this;
@@ -227,18 +244,18 @@ exports.App = App;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 exports.__esModule = true;
-var polygon_entity_1 = __webpack_require__(7);
+var polygon_entity_1 = __webpack_require__(8);
 var util_service_1 = __webpack_require__(1);
 var system_entity_1 = __webpack_require__(0);
 var point_entity_1 = __webpack_require__(2);
-var orbit_entity_1 = __webpack_require__(9);
-var direction_enum_1 = __webpack_require__(10);
+var orbit_entity_1 = __webpack_require__(10);
+var direction_enum_1 = __webpack_require__(3);
 var sun_entity_1 = __webpack_require__(11);
 /**
  * Created by Grimbode on 02/12/2017.
@@ -432,7 +449,7 @@ exports.GameService = GameService;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -449,7 +466,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var system_entity_1 = __webpack_require__(0);
-var direction_enum_1 = __webpack_require__(10);
+var direction_enum_1 = __webpack_require__(3);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -476,7 +493,7 @@ exports.Polygon = Polygon;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -504,7 +521,7 @@ exports.Vertex = Vertex;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -520,7 +537,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var circle_entity_1 = __webpack_require__(3);
+var circle_entity_1 = __webpack_require__(4);
 /**
  * Created by Grimbode on 02/12/2017.
  */
@@ -536,23 +553,6 @@ var Orbit = /** @class */ (function (_super) {
     return Orbit;
 }(circle_entity_1.Circle));
 exports.Orbit = Orbit;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Created by Grimbode on 07/12/2017.
- */
-exports.__esModule = true;
-var Direction;
-(function (Direction) {
-    Direction[Direction["ClockWise"] = 1] = "ClockWise";
-    Direction[Direction["CounterClockwise"] = -1] = "CounterClockwise";
-})(Direction = exports.Direction || (exports.Direction = {}));
 
 
 /***/ }),
@@ -575,7 +575,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-var circle_entity_1 = __webpack_require__(3);
+var circle_entity_1 = __webpack_require__(4);
 var Sun = /** @class */ (function (_super) {
     __extends(Sun, _super);
     function Sun(point, radius, color) {
