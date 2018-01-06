@@ -1,13 +1,13 @@
 import {Point} from "./point.entity";
 import {Polygon} from "./polygon.entity";
 import {GetRandomArbitrary} from "../services/util.service";
-import {Circle} from "./circle.entity";
+import {Sun} from "./sun.entity";
 /**
  * Created by Grimbode on 02/12/2017.
  */
 
 export class System {
-    public sun: Circle;
+    public sun: Sun;
     public planets: Polygon[];
     public sentinelOrbitDistance: number;
     constructor(

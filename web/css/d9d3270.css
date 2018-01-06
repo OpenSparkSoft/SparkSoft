@@ -44,6 +44,6 @@ html, body, body > .container, #cover {
     background-color: white;
 }
 
-body > .container {
+body > #mainContent {
     background-color: rgba(194, 194, 194, .05);
 }

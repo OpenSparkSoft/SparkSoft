@@ -43,10 +43,10 @@
     </div>
 </div>
 
-<div id="mainContent" style="display: none;">
+<div id="mainContent" class="container" style="display: none;">
 {% block body %}{% endblock %}
-{% include 'partials/footer.html.twig' %}
 </div>
+{% include 'partials/footer.html.twig' %}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -57,13 +57,19 @@
     //Loading gif part, didn't feel like optimizing the huge background image #lazy
 
     (function(){
+        //Variables
         var $cover = $("#cover");
         var $window = $(window);
+        var $page = $(document);
         var $mainContent = $("#mainContent");
+        var $footer = $("footer");
+
+        //Handling cover
         $cover.height($window.height());
         $cover.width($window.width());
-        var image = new Image();
 
+        //Huge background image
+        var image = new Image();
         image.addEventListener("load", function () {
             $("body").css("background-image", "url(" + this.src + ")");
             $mainContent.show();
@@ -71,11 +77,30 @@
         });
         image.src = "/bundles/app/images/background.jpg";
 
+        //Handlign footer fixed and unfixed
+        /*var footerHandler = function(){
+
+            //means there is a vertical scroll
+            if($page.height() > $window.height()){
+                $footer.css("position", "relative")
+            } else {
+                //We suppose the page is equal or smaller than the window size.
+                $footer.css("position", "fixed")
+            }
+        };*/
+
+        $(document.body).ready(function () {
+            $(this).height($window.height());
+            footerHandler()
+        });
+
+        window.addEventListener("resize", footerHandler);
+
     })();
 
-    $(document.body).ready(function () {
-        $(this).height($(window).height());
-    })
+
+
+
 </script>
 </body>
 </html>

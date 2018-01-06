@@ -28,7 +28,8 @@ export class App {
 
         //no point in changing size if the user constantly changes the window size.
         this.si = setTimeout(()=>{
-            this.canvasElement.width = window.innerWidth;
+
+            this.canvasElement.width = document.body.clientWidth;
             this.canvasElement.height = window.innerHeight;
             //TODO: Regenerate all systems?
             if(callback && callback != null){

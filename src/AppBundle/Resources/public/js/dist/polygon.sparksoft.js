@@ -226,7 +226,7 @@ var App = /** @class */ (function () {
                 clearTimeout(_this.si);
             //no point in changing size if the user constantly changes the window size.
             _this.si = setTimeout(function () {
-                _this.canvasElement.width = window.innerWidth;
+                _this.canvasElement.width = document.body.clientWidth;
                 _this.canvasElement.height = window.innerHeight;
                 //TODO: Regenerate all systems?
                 if (callback && callback != null) {
