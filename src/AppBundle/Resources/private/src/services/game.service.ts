@@ -66,7 +66,7 @@ export class GameService {
 
     private createSystem(point: Point){
 
-        let radius = GetRandomArbitrary(this.canvas.width*0.10, 5);
+        let radius = GetRandomArbitrary(this.canvas.width*0.10, this.canvas.width*0.05);
         let gradient = this.ctx.createRadialGradient(point.x, point.y, GetRandomArbitrary(radius/2), point.x, point.y, radius);
         gradient.addColorStop(0, "#c5b099");
         gradient.addColorStop(1, "#8997aa");

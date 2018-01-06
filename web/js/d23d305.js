@@ -315,7 +315,7 @@ var GameService = /** @class */ (function () {
         this.createSystem(point3);
     };
     GameService.prototype.createSystem = function (point) {
-        var radius = util_service_1.GetRandomArbitrary(this.canvas.width * 0.10, 5);
+        var radius = util_service_1.GetRandomArbitrary(this.canvas.width * 0.10, this.canvas.width * 0.05);
         var gradient = this.ctx.createRadialGradient(point.x, point.y, util_service_1.GetRandomArbitrary(radius / 2), point.x, point.y, radius);
         gradient.addColorStop(0, "#c5b099");
         gradient.addColorStop(1, "#8997aa");
