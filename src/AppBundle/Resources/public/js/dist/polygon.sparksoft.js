@@ -122,6 +122,10 @@ function GetRandomColor() {
     return "rgb(" + GetRandomArbitrary(256) + "," + GetRandomArbitrary(256) + "," + GetRandomArbitrary(256) + ")";
 }
 exports.GetRandomColor = GetRandomColor;
+function GetRandomPlanetColor() {
+    return "rgb(" + GetRandomArbitrary(197, 137) + "," + GetRandomArbitrary(176, 151) + "," + GetRandomArbitrary(176, 153) + ")";
+}
+exports.GetRandomPlanetColor = GetRandomPlanetColor;
 
 
 /***/ }),
@@ -217,7 +221,7 @@ var App = /** @class */ (function () {
             if (!_this.canvasElement)
                 return console.warn("No canvas element found.");
             _this.resize(function () {
-                _this.game = new game_service_1.GameService(_this.canvasElement, 8, 3, 3);
+                _this.game = new game_service_1.GameService(_this.canvasElement);
             });
         };
         this.resize = function (callback) {
@@ -262,9 +266,9 @@ var sun_entity_1 = __webpack_require__(11);
  */
 var GameService = /** @class */ (function () {
     function GameService(canvas, initialSystemCount, initialPlanetCount, inception, fps, then) {
-        if (initialSystemCount === void 0) { initialSystemCount = 10; }
-        if (initialPlanetCount === void 0) { initialPlanetCount = 10; }
-        if (inception === void 0) { inception = 0; }
+        if (initialSystemCount === void 0) { initialSystemCount = 3; }
+        if (initialPlanetCount === void 0) { initialPlanetCount = 4; }
+        if (inception === void 0) { inception = 3; }
         if (fps === void 0) { fps = 30; }
         if (then === void 0) { then = Date.now(); }
         var _this = this;
@@ -303,17 +307,18 @@ var GameService = /** @class */ (function () {
         this.loop();
     };
     GameService.prototype.createSystems = function () {
-        var systemCount = util_service_1.GetRandomArbitrary(this.initialSystemCount, 1);
-        for (var i = 0; i < systemCount; i++) {
-            this.createSystem();
-        }
+        var point1 = new point_entity_1.Point(util_service_1.GetRandomArbitrary(this.canvas.width * 0.25), util_service_1.GetRandomArbitrary(this.canvas.height * 0.25));
+        var point2 = new point_entity_1.Point(util_service_1.GetRandomArbitrary(this.canvas.width, this.canvas.width * 0.75), util_service_1.GetRandomArbitrary(this.canvas.height * 0.75, this.canvas.height * 0.25));
+        var point3 = new point_entity_1.Point(util_service_1.GetRandomArbitrary(this.canvas.width * 0.25), util_service_1.GetRandomArbitrary(this.canvas.height * 0.85, this.canvas.height * 0.65));
+        this.createSystem(point1);
+        this.createSystem(point2);
+        this.createSystem(point3);
     };
-    GameService.prototype.createSystem = function () {
-        var point = new point_entity_1.Point(util_service_1.GetRandomArbitrary(this.canvas.offsetWidth), util_service_1.GetRandomArbitrary(this.canvas.offsetHeight));
-        var radius = util_service_1.GetRandomArbitrary(100, 20);
+    GameService.prototype.createSystem = function (point) {
+        var radius = util_service_1.GetRandomArbitrary(this.canvas.width * 0.10, 5);
         var gradient = this.ctx.createRadialGradient(point.x, point.y, util_service_1.GetRandomArbitrary(radius / 2), point.x, point.y, radius);
-        gradient.addColorStop(0, "yellow");
-        gradient.addColorStop(1, "orange");
+        gradient.addColorStop(0, "#c5b099");
+        gradient.addColorStop(1, "#8997aa");
         var sun = new sun_entity_1.Sun(point, radius, gradient);
         console.log("System point: " + point.x + ", " + point.y);
         var system = new system_entity_1.System(point);
@@ -322,16 +327,15 @@ var GameService = /** @class */ (function () {
     };
     GameService.prototype.createPlanets = function (system, inception) {
         if (inception === void 0) { inception = 0; }
-        var planetCount = util_service_1.GetRandomArbitrary(this.initialPlanetCount + 1, 0);
+        var planetCount = util_service_1.GetRandomArbitrary(this.initialPlanetCount + 1, 1);
         for (var i = 0; i < planetCount; i++) {
-            var offset = system instanceof polygon_entity_1.Polygon
-                ? system.radius + system.radius * 0.5
-                : system.sun.radius + system.sun.radius * 0.5;
             var orbitRadiusMin = void 0, orbitRadiusMax = void 0;
             orbitRadiusMax = orbitRadiusMin
                 = system.planets.length > 0
-                    ? system.planets[system.planets.length - 1].orbit.radius + offset
-                    : offset;
+                    ? system.planets[system.planets.length - 1].orbit.radius + system.planets[system.planets.length - 1].orbit.radius * 0.3
+                    : system instanceof polygon_entity_1.Polygon
+                        ? system.radius + system.radius * 0.3
+                        : system.sun.radius + system.sun.radius * 0.3;
             this.createPlanet(system, util_service_1.GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin));
             if (inception > 0 && system.planets.length > 0) {
                 this.createPlanets(system.planets[system.planets.length - 1], inception - 1);
@@ -342,7 +346,7 @@ var GameService = /** @class */ (function () {
         var initAngle = util_service_1.GetRandomArbitrary(2 * Math.PI);
         var orbit = new orbit_entity_1.Orbit(system.point, radius, initAngle, util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise, util_service_1.GetRandomArbitrary(100) / 10000);
         var point = new point_entity_1.Point((orbit.radius) * Math.cos(util_service_1.GetRandomArbitrary(orbit.angle)), (orbit.radius) * Math.sin(util_service_1.GetRandomArbitrary(orbit.angle)));
-        var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomColor(), util_service_1.GetRandomArbitrary(0.1, 0, false), util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise);
+        var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomPlanetColor(), util_service_1.GetRandomArbitrary(0.1, 0, false), util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise);
         console.log(polygon.color);
         this.populateWithAngles(polygon);
         polygon.orbit = orbit;

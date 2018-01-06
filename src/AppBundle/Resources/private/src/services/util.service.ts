@@ -32,3 +32,7 @@ export function GetVertexFromRadiusAndAngle(radius: number, angle: number): Vert
 export function GetRandomColor(): string {
     return `rgb(${GetRandomArbitrary(256)},${GetRandomArbitrary(256)},${GetRandomArbitrary(256)})`
 }
+
+export function GetRandomPlanetColor(): string {
+    return `rgb(${GetRandomArbitrary(197, 137)},${GetRandomArbitrary(176, 151)},${GetRandomArbitrary(176, 153)})`
+}

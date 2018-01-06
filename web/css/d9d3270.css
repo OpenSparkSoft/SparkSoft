@@ -29,7 +29,7 @@ body {
 }
 
 .card-header a {
-    color: gray;
+    color: #3e3e3e;
 }
 
 html, body, body > .container, #cover {
@@ -46,4 +46,8 @@ html, body, body > .container, #cover {
 
 body > #mainContent {
     background-color: rgba(194, 194, 194, .05);
+}
+
+.card {
+    background-color: #c2c2c2;
 }

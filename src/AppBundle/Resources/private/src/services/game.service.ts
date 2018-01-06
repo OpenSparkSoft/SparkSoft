@@ -1,12 +1,11 @@
 import {Polygon} from "../entities/polygon.entity";
 import {
-    DistanceBetweenTwoPoints, GetRandomArbitrary, GetRandomColor,
+    DistanceBetweenTwoPoints, GetRandomArbitrary, GetRandomColor, GetRandomPlanetColor,
     GetVertexFromRadiusAndAngle
 } from "./util.service";
 import {System} from "../entities/system.entity";
 import {Point} from "../entities/point.entity";
 import {Orbit} from "../entities/orbit.entity";
-import {Circle} from "../entities/circle.entity";
 import {Direction} from "../enums/direction.enum";
 import {Sun} from "../entities/sun.entity";
 /**
@@ -21,9 +20,9 @@ export class GameService {
 
     constructor(
         private canvas: HTMLCanvasElement,
-        private initialSystemCount: number = 10,
-        private initialPlanetCount: number = 10,
-        private inception: number = 0,
+        private initialSystemCount: number = 3,
+        private initialPlanetCount: number = 4,
+        private inception: number = 3,
         private fps: number = 30,
         private then: number = Date.now()
     ){
@@ -44,22 +43,33 @@ export class GameService {
     }
 
     private createSystems(){
-        let systemCount = GetRandomArbitrary(this.initialSystemCount, 1);
-        for(let i = 0; i < systemCount; i++){
-            this.createSystem()
-        }
+
+        let point1 = new Point(
+            GetRandomArbitrary(this.canvas.width*0.25),
+            GetRandomArbitrary(this.canvas.height*0.25)
+        );
+
+        let point2 = new Point(
+            GetRandomArbitrary(this.canvas.width, this.canvas.width*0.75),
+            GetRandomArbitrary(this.canvas.height*0.75, this.canvas.height*0.25)
+        );
+
+        let point3 = new Point(
+            GetRandomArbitrary(this.canvas.width*0.25),
+            GetRandomArbitrary(this.canvas.height*0.85, this.canvas.height*0.65)
+        );
+
+        this.createSystem(point1);
+        this.createSystem(point2);
+        this.createSystem(point3);
     }
 
-    private createSystem(){
+    private createSystem(point: Point){
 
-        let point = new Point(
-            GetRandomArbitrary(this.canvas.offsetWidth),
-            GetRandomArbitrary(this.canvas.offsetHeight)
-        );
-        let radius =GetRandomArbitrary(100, 20);
+        let radius = GetRandomArbitrary(this.canvas.width*0.10, 5);
         let gradient = this.ctx.createRadialGradient(point.x, point.y, GetRandomArbitrary(radius/2), point.x, point.y, radius);
-        gradient.addColorStop(0, "yellow");
-        gradient.addColorStop(1, "orange");
+        gradient.addColorStop(0, "#c5b099");
+        gradient.addColorStop(1, "#8997aa");
         let sun = new Sun(point, radius, gradient);
         console.log(`System point: ${point.x}, ${point.y}`);
         let system =new System(point);
@@ -68,18 +78,19 @@ export class GameService {
     }
 
     private createPlanets(system: System, inception: number = 0){
-        let planetCount = GetRandomArbitrary(this.initialPlanetCount+1, 0);
+        let planetCount = GetRandomArbitrary(this.initialPlanetCount+1, 1);
         for(let i = 0; i < planetCount; i++){
 
-            let offset = system instanceof Polygon
-                ? system.radius + system.radius*0.5
-                : system.sun.radius + system.sun.radius*0.5
 
             let orbitRadiusMin, orbitRadiusMax;
             orbitRadiusMax = orbitRadiusMin
                 = system.planets.length > 0
-                ? system.planets[system.planets.length-1].orbit.radius + offset
-                : offset;
+                ? system.planets[system.planets.length-1].orbit.radius + system.planets[system.planets.length-1].orbit.radius*0.3
+                : system instanceof Polygon
+                    ? system.radius + system.radius*0.3
+                    : system.sun.radius + system.sun.radius*0.3;
+
+
 
             this.createPlanet(system, GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin));
 
@@ -107,7 +118,7 @@ export class GameService {
         let polygon = new Polygon(
             point,
             GetRandomArbitrary(orbit.radius*.2),
-            GetRandomColor(),
+            GetRandomPlanetColor(),
             GetRandomArbitrary(0.1, 0, false),
             GetRandomArbitrary(2,0) == 0 ? Direction.ClockWise : Direction.CounterClockwise
         );
