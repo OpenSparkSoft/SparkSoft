@@ -1,5 +1,5 @@
 footer {
-    background-color: #007bff;
+    background-color: #273637;
     padding-top: 2em;
     color: white;
     margin-top: 3em;
@@ -14,6 +14,6 @@ footer a:hover {
 }
 
 footer img {
-    background-color: white;
+    background-color: #224547;
     border-radius: 50%;
 }

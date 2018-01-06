@@ -3,6 +3,18 @@
     margin-bottom: 2em;
 }
 
+#me, #quote {
+    color: #c2c2c2;
+}
+
+#title {
+    color: #c8c8c8;
+}
+
+#title > span {
+    color: #999999;
+}
+
 #canvas {
     position: absolute;
     left: 0;
@@ -11,5 +23,27 @@
 }
 
 body {
-    background-color: #708090;
+    /*This was added in js : background-image: url("../images/background.jpg");*/
+    background-repeat: repeat-y;
+    background-size: cover;
+}
+
+.card-header a {
+    color: gray;
+}
+
+html, body, body > .container, #cover {
+    height: 100%;
+}
+
+#cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: white;
+}
+
+body > .container {
+    background-color: rgba(194, 194, 194, .05);
 }
