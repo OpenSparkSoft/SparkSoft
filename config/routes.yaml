@@ -1,0 +1,8 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+
+main_index:
+    path: /
+    controller: App\Controller\MainController::index

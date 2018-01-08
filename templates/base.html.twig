@@ -1,0 +1,122 @@
+<!--
+
+    Hey there :),
+
+    Interested in this code? Just check it out on github : https://github.com/OpenSparkSoft/SparkSoft
+    If you're more interested in seeing how I constructed the solar system background, then checkout my Typescript project
+    https://github.com/OpenSparkSoft/SparkSoft/tree/master/src/AppBundle/Resources/private
+
+    Cheers,
+    Kevin
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}SparkSoft!{% endblock %}</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('images/apple-icon-57x57.png')}}"/>
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('images/apple-icon-60x60.png')}}"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('images/apple-icon-72x72.png')}}"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('images/apple-icon-76x76.png')}}"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('images/apple-icon-114x114.png')}}"/>
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('images/apple-icon-120x120.png')}}"/>
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('images/apple-icon-144x144.png')}}"/>
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('images/apple-icon-152x152.png')}}"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-icon-180x180.png')}}"/>
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('images/android-icon-192x192.png')}}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png')}}"/>
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/favicon-96x96.png')}}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png')}}"/>
+    <link rel="manifest" href="{{ asset('images/manifest.json')}}"/>
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ asset('images/ms-icon-144x144.png')}}"/>
+    <meta name="theme-color" content="#ffffff">
+
+    <script src="https://use.fontawesome.com/9ea096b5ef.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ asset('css/footer.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/loading.html.css') }}" />
+    {% block stylesheets %}{% endblock %}
+
+
+</head>
+<body>
+
+<div id="cover">
+    <div id="wrapper">
+
+        <div class="profile-main-loader">
+            <div class="loader">
+                <svg class="circular-loader"viewBox="25 25 50 50" >
+                    <circle class="loader-path" cx="50" cy="50" r="20" fill="none" stroke="#70c542" stroke-width="2" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="mainContent" class="container" style="display: none;">
+    {% block body %}{% endblock %}
+</div>
+{% include 'partials/footer.html.twig' %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+{% block javascripts %}{% endblock %}
+<script>
+
+    //Loading gif part, didn't feel like optimizing the huge background image #lazy
+
+    (function(){
+        //Variables
+        var $cover = $("#cover");
+        var $window = $(window);
+        var $page = $(document);
+        var $mainContent = $("#mainContent");
+        var $footer = $("footer");
+
+        //Handling cover
+        $cover.height($window.height());
+        $cover.width($window.width());
+
+        //Huge background image
+        var image = new Image();
+        image.addEventListener("load", function () {
+            $("body").css("background-image", "url(" + this.src + ")");
+            $mainContent.show();
+            $cover.fadeOut(2000);
+        });
+        image.src = "images/background.jpg";
+
+        //Handlign footer fixed and unfixed
+        /*var footerHandler = function(){
+
+         //means there is a vertical scroll
+         if($page.height() > $window.height()){
+         $footer.css("position", "relative")
+         } else {
+         //We suppose the page is equal or smaller than the window size.
+         $footer.css("position", "fixed")
+         }
+         };*/
+
+        $(document.body).ready(function () {
+            $(this).height($window.height());
+            //footerHandler()
+        });
+
+        //window.addEventListener("resize", footerHandler);
+
+    })();
+
+
+
+
+</script>
+</body>
+</html>

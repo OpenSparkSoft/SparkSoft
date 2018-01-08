@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/index.html.css') }}" />
+{% endblock %}
+
+{% block body %}
+    <div id="animation_data"></div>
+    <canvas id="canvas"></canvas>
+
+    <h1 id="title" class="display-1 text-center">Spark<span class="text-muted">Soft</span></h1>
+
+    <div id="me" class="row justify-content-md-center">
+        <div class="media">
+            <img  width="64" height="64" class="mr-3" src="{{ asset('images/sparklogo.png') }}" alt="Generic placeholder image"/>
+            <div class="media-body">
+                <h5 class="mt-0">Kevin Faulhaber</h5>
+                <a data-toggle="popover" data-trigger="hover" title="What's this?"
+                   data-content="A Full Stack Web Developer takes care of building the application from A to Z.">Full Stack Web Developer</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="quote" class="row justify-content-md-center">
+        <blockquote class="blockquote text-center">
+            <p class="mb-0 lead">Simple, beautiful, and performant web and mobile applications.</p>
+        </blockquote>
+    </div>
+
+    <div id="hire_me" class="row justify-content-md-center">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Hire me!</button>
+    </div>
+
+
+    <div id="accordion" role="tablist">
+        <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+                <h5 class="mb-0">
+                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Professional Experience
+                    </a>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <h5>Freelancer <small class="text-muted">on going...</small></h5>
+                    <h5>IRCAD Professional Apprenticeship <small class="text-muted">2015-2017</small></h5>
+                    <h5>IRCAD Apprenticeship <small class="text-muted">2014-2015</small></h5>
+                    <h5>Almedia Internship <small class="text-muted">2014 Summer</small></h5>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" role="tab" id="headingTwo">
+                <h5 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Education
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <h5>Master's Degree "Computer Expert" at SupInfo <small class="text-muted">2015-2017</small></h5>
+                    <h5>Bachelor's Degree in Computing <small class="text-muted">2015-2017</small></h5>
+                    <h5>IT Degree at Robert Schuman Strasbourg <small class="text-muted">2012-2014</small></h5>
+                    <h5>French Baccalaureat Science<small class="text-muted">2011</small></h5>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" role="tab" id="headingThree">
+                <h5 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Technologies
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    I've worked with a variety of different technologies, and I absolutely love testing out
+                    the lastest ones. I admit, I had to calm down from the JavaScript hype train.
+
+                    I'm skilled in a vareity of different kinds of technologies.
+                    This list covers most of what I've worked with.
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <h5>Web Languages and Frameworks</h5>
+                            <ul>
+                                <li>JavaScript <span class="badge badge-success">Expert</span></li>
+                                <li>TypeScript <span class="badge badge-primary">Advanced</span></li>
+                                <li>Angular <span class="badge badge-info">Intermediate</span></li>
+                                <li>HTML5 <span class="badge badge-primary">Advanced</span></li>
+                                <li>jQuery <span class="badge badge-success">Expert</span></li>
+                                <li>CSS3 <span class="badge badge-info">Intermediate</span></li>
+
+                            </ul>
+                        </div>
+                        <div class="col-sm">
+                            <h5>Programming Languages and Frameworks</h5>
+                            <ul>
+                                <li>git  <span class="badge badge-primary">Advanced</span></li>
+                                <li>Go</li>
+                                <li>PHP7</li>
+                                <li>Symfony3</li>
+                                <li>NodeJs</li>
+                                <li>Swift</li>
+                                <li>Android</li>
+                                <li>Java</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm">
+                            <h5>Databases</h5>
+                            <ul>
+                                <li>MySQL</li>
+                                <li>MongoDB</li>
+                                <li>Redis</li>
+                                <li>SQLlite</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" role="tab" id="headingFour">
+                <h5 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Interests
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    Competitive Swimming (National Level) 10 Years
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Send message to Kevin Faulhaber</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Email*</label>
+                        <input type="email" class="form-control" id="recipient-name" required maxlength="100" minlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Name*</label>
+                        <input type="text" class="form-control" id="recipient-name" required maxlength="100" minlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Subject*</label>
+                        <input type="text" class="form-control" id="recipient-name" required maxlength="100" minlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Mesage*</label>
+                        <textarea class="form-control" id="message-text" required maxlength="500" minlength="50"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/dist/polygon.sparksoft.js') }}"></script>
+    <script>
+
+        //Initiating library.
+        new SparkSoft("canvas");
+
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover({ trigger: 'hover' });
+        });
+    </script>
+
+{% endblock %}
