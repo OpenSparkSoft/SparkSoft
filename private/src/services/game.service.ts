@@ -20,8 +20,7 @@ export class GameService {
 
     constructor(
         private canvas: HTMLCanvasElement,
-        private initialSystemCount: number = 3,
-        private initialPlanetCount: number = 4,
+        private initialPlanetCount: number = 3,
         private inception: number = 3,
         private fps: number = 30,
         private then: number = Date.now()
@@ -36,7 +35,7 @@ export class GameService {
         this.createSystems();
 
         this.systems.forEach((system: System)=>{
-            this.createPlanets(system, GetRandomArbitrary(this.inception+1, 1));
+            this.createPlanets(system, GetRandomArbitrary(this.inception, 1));
         });
         this.loop();
 
@@ -90,9 +89,9 @@ export class GameService {
                     ? system.radius + system.radius*0.3
                     : system.sun.radius + system.sun.radius*0.3;
 
-
-
-            this.createPlanet(system, GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin));
+            let radius = GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin);
+            if(radius < 5) radius = 5;
+            this.createPlanet(system, radius);
 
             if(inception > 0 && system.planets.length > 0){
                 this.createPlanets(system.planets[system.planets.length-1], inception-1)
@@ -101,6 +100,9 @@ export class GameService {
     }
 
     private createPlanet(system: System, radius: number) {
+        //no point if the orbits are too close.
+        if(system.planets.length > 0 && Math.abs(radius - system.planets[system.planets.length-1].orbit.radius) < 5) return;
+
         let initAngle = GetRandomArbitrary(2*Math.PI);
         let orbit = new Orbit(
             system.point,
@@ -123,11 +125,8 @@ export class GameService {
             GetRandomArbitrary(2,0) == 0 ? Direction.ClockWise : Direction.CounterClockwise
         );
 
-        console.log(polygon.color);
         this.populateWithAngles(polygon);
-
         polygon.orbit = orbit;
-        console.log(polygon);
         system.planets.push(polygon);
     }
 

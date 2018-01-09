@@ -231,7 +231,7 @@ var App = /** @class */ (function () {
             //no point in changing size if the user constantly changes the window size.
             _this.si = setTimeout(function () {
                 _this.canvasElement.width = document.body.clientWidth;
-                _this.canvasElement.height = window.innerHeight;
+                _this.canvasElement.height = document.body.clientHeight;
                 //TODO: Regenerate all systems?
                 if (callback && callback != null) {
                     callback();
@@ -265,15 +265,13 @@ var sun_entity_1 = __webpack_require__(11);
  * Created by Grimbode on 02/12/2017.
  */
 var GameService = /** @class */ (function () {
-    function GameService(canvas, initialSystemCount, initialPlanetCount, inception, fps, then) {
-        if (initialSystemCount === void 0) { initialSystemCount = 3; }
-        if (initialPlanetCount === void 0) { initialPlanetCount = 4; }
+    function GameService(canvas, initialPlanetCount, inception, fps, then) {
+        if (initialPlanetCount === void 0) { initialPlanetCount = 3; }
         if (inception === void 0) { inception = 3; }
         if (fps === void 0) { fps = 30; }
         if (then === void 0) { then = Date.now(); }
         var _this = this;
         this.canvas = canvas;
-        this.initialSystemCount = initialSystemCount;
         this.initialPlanetCount = initialPlanetCount;
         this.inception = inception;
         this.fps = fps;
@@ -302,7 +300,7 @@ var GameService = /** @class */ (function () {
         this.systems = [];
         this.createSystems();
         this.systems.forEach(function (system) {
-            _this.createPlanets(system, util_service_1.GetRandomArbitrary(_this.inception + 1, 1));
+            _this.createPlanets(system, util_service_1.GetRandomArbitrary(_this.inception, 1));
         });
         this.loop();
     };
@@ -336,21 +334,25 @@ var GameService = /** @class */ (function () {
                     : system instanceof polygon_entity_1.Polygon
                         ? system.radius + system.radius * 0.3
                         : system.sun.radius + system.sun.radius * 0.3;
-            this.createPlanet(system, util_service_1.GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin));
+            var radius = util_service_1.GetRandomArbitrary(orbitRadiusMax, orbitRadiusMin);
+            if (radius < 5)
+                radius = 5;
+            this.createPlanet(system, radius);
             if (inception > 0 && system.planets.length > 0) {
                 this.createPlanets(system.planets[system.planets.length - 1], inception - 1);
             }
         }
     };
     GameService.prototype.createPlanet = function (system, radius) {
+        //no point if the orbits are too close.
+        if (system.planets.length > 0 && Math.abs(radius - system.planets[system.planets.length - 1].orbit.radius) < 5)
+            return;
         var initAngle = util_service_1.GetRandomArbitrary(2 * Math.PI);
         var orbit = new orbit_entity_1.Orbit(system.point, radius, initAngle, util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise, util_service_1.GetRandomArbitrary(100) / 10000);
         var point = new point_entity_1.Point((orbit.radius) * Math.cos(util_service_1.GetRandomArbitrary(orbit.angle)), (orbit.radius) * Math.sin(util_service_1.GetRandomArbitrary(orbit.angle)));
         var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomPlanetColor(), util_service_1.GetRandomArbitrary(0.1, 0, false), util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise);
-        console.log(polygon.color);
         this.populateWithAngles(polygon);
         polygon.orbit = orbit;
-        console.log(polygon);
         system.planets.push(polygon);
     };
     GameService.prototype.populateWithAngles = function (planet) {

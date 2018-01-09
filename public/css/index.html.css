@@ -1,4 +1,4 @@
-#quote,#me, #hire_me, #quote {
+#quote,#me, #hire_me {
     margin-top: 2em;
     margin-bottom: 2em;
 }
@@ -28,10 +28,6 @@ body {
     background-size: cover;
 }
 
-.card-header a {
-    color: #3e3e3e;
-}
-
 html, body, body > .container, #cover {
     height: 100%;
 }
@@ -46,8 +42,23 @@ html, body, body > .container, #cover {
 
 body > #mainContent {
     background-color: rgba(194, 194, 194, .05);
+    padding-top: 4em;
 }
 
 .card {
     background-color: #c2c2c2;
+}
+
+.media > .fa {
+    font-size: 10em;
+}
+
+.media h5, .media i, .media .media-body {
+    color: #c2c2c2;
+}
+
+#content .media {
+    background-color: #3e3e3e;
+    padding: 2em;
+    margin-bottom: 1em;
 }

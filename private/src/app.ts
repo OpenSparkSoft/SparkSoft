@@ -30,7 +30,7 @@ export class App {
         this.si = setTimeout(()=>{
 
             this.canvasElement.width = document.body.clientWidth;
-            this.canvasElement.height = window.innerHeight;
+            this.canvasElement.height = document.body.clientHeight;
             //TODO: Regenerate all systems?
             if(callback && callback != null){
                 callback();
