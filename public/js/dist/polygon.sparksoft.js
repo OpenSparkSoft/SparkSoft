@@ -350,7 +350,7 @@ var GameService = /** @class */ (function () {
         var initAngle = util_service_1.GetRandomArbitrary(2 * Math.PI);
         var orbit = new orbit_entity_1.Orbit(system.point, radius, initAngle, util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise, util_service_1.GetRandomArbitrary(100) / 10000);
         var point = new point_entity_1.Point((orbit.radius) * Math.cos(util_service_1.GetRandomArbitrary(orbit.angle)), (orbit.radius) * Math.sin(util_service_1.GetRandomArbitrary(orbit.angle)));
-        var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2), util_service_1.GetRandomPlanetColor(), util_service_1.GetRandomArbitrary(0.1, 0, false), util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise);
+        var polygon = new polygon_entity_1.Polygon(point, util_service_1.GetRandomArbitrary(orbit.radius * .2, 5), util_service_1.GetRandomPlanetColor(), util_service_1.GetRandomArbitrary(0.1, 0, false), util_service_1.GetRandomArbitrary(2, 0) == 0 ? direction_enum_1.Direction.ClockWise : direction_enum_1.Direction.CounterClockwise);
         this.populateWithAngles(polygon);
         polygon.orbit = orbit;
         system.planets.push(polygon);

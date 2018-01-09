@@ -15,12 +15,6 @@
     color: #999999;
 }
 
-#canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: -1;
-}
 
 body {
     /*This was added in js : background-image: url("../images/background.jpg");*/
@@ -30,14 +24,6 @@ body {
 
 html, body, body > .container, #cover {
     height: 100%;
-}
-
-#cover {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 99;
-    background-color: white;
 }
 
 body > #mainContent {
@@ -58,7 +44,7 @@ body > #mainContent {
 }
 
 #content .media {
-    background-color: #3e3e3e;
+    background-color: rgba(62, 62, 62, .50);
     padding: 2em;
     margin-bottom: 1em;
 }

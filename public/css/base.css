@@ -1,0 +1,14 @@
+#canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+#cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background-color: white;
+}

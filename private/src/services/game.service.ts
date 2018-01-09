@@ -119,7 +119,7 @@ export class GameService {
 
         let polygon = new Polygon(
             point,
-            GetRandomArbitrary(orbit.radius*.2),
+            GetRandomArbitrary(orbit.radius*.2, 5),
             GetRandomPlanetColor(),
             GetRandomArbitrary(0.1, 0, false),
             GetRandomArbitrary(2,0) == 0 ? Direction.ClockWise : Direction.CounterClockwise

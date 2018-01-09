@@ -5,11 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div id="animation_data"></div>
-    <canvas id="canvas"></canvas>
-
     <h1 id="title" class="display-1 text-center">Spark<span class="text-muted">Soft</span></h1>
-
     <div id="me" class="row justify-content-md-center">
         <div class="media">
             <img  width="64" height="64" class="mr-3" src="{{ asset('images/sparklogo.png') }}" alt="Generic placeholder image"/>
@@ -184,15 +180,4 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/dist/polygon.sparksoft.js') }}"></script>
-    <script>
-
-        //Initiating library.
-        new SparkSoft("canvas");
-
-        $(document).ready(function () {
-            $('[data-toggle="popover"]').popover({ trigger: 'hover' });
-        });
-    </script>
-
 {% endblock %}

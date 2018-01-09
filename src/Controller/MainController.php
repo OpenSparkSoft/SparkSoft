@@ -14,4 +14,8 @@ class MainController extends Controller
     public function index(){
         return $this->render('main/index.html.twig');
     }
+
+    public function aboutme(){
+        return $this->render('main/aboutme.html.twig');
+    }
 }

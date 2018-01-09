@@ -6,3 +6,6 @@
 main_index:
     path: /
     controller: App\Controller\MainController::index
+about_me:
+    path: /aboutme
+    controller: App\Controller\MainController::aboutme
