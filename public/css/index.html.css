@@ -20,9 +20,10 @@ body {
     /*This was added in js : background-image: url("../images/background.jpg");*/
     background-repeat: repeat-y;
     background-size: cover;
+    overflow-x: hidden;
 }
 
-html, body, body > .container, #cover {
+#cover {
     height: 100%;
 }
 
