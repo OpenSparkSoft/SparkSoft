@@ -185,11 +185,18 @@ export class GameService {
             this.then = now - (delta % this.interval);
 
             //TODO: divide this into regions, for optimization.
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            //this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            /*this.systems.forEach((system: System) => {
-                system.planets.forEach(this.recursiveClear);
-            });*/
+            this.systems.forEach((system: System) => {
+                let totalPlanets = system.planets.length;
+                let furthestPlanet = system.planets[totalPlanets-1];
+                let furthestOrbit = furthestPlanet.orbit;
+                let radius = furthestOrbit.radius*1.5;
+                let diameter = radius*4;
+                this.ctx.clearRect(system.point.x-radius, system.point.y-radius, diameter, diameter)
+
+                //Deprecated: system.planets.forEach(this.recursiveClear);
+            });
 
             //Draw stuff here.
             this.systems.forEach((system: System)=>{

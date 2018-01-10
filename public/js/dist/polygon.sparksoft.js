@@ -393,10 +393,16 @@ var GameService = /** @class */ (function () {
         if (delta > this.interval) {
             this.then = now - (delta % this.interval);
             //TODO: divide this into regions, for optimization.
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            /*this.systems.forEach((system: System) => {
-                system.planets.forEach(this.recursiveClear);
-            });*/
+            //this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.systems.forEach(function (system) {
+                var totalPlanets = system.planets.length;
+                var furthestPlanet = system.planets[totalPlanets - 1];
+                var furthestOrbit = furthestPlanet.orbit;
+                var radius = furthestOrbit.radius * 1.5;
+                var diameter = radius * 4;
+                _this.ctx.clearRect(system.point.x - radius, system.point.y - radius, diameter, diameter);
+                //Deprecated: system.planets.forEach(this.recursiveClear);
+            });
             //Draw stuff here.
             this.systems.forEach(function (system) {
                 _this.drawCircle(system.sun);
