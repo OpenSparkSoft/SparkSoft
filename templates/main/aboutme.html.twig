@@ -1,17 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/aboutme.css') }}" />
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h2>Kevin Faulhaber</h2>
+    <div id="container" class="container">
+        <div class="media">
+            <img class="mr-3" src="{{ asset('images/kevin.jpg') }}" width="200" height="auto" alt="Generic placeholder image">
+            <div class="media-body">
+                <h3 class="mt-0">Kevin Faulhaber</h3>
+                Full Stack Web Developer
+            </div>
+        </div>
          <section id="goals">
              <h4>Goals</h4>
              <dl class="row">
                  <dt class="col-sm-3">Short term</dt>
                  <dd class="col-sm-9">
-                     <p>As of right now, I'm interested in any dynamic web projects.</p>
+                     <p>As of right now, I'm interested in any dynamic web projects and any foreign job opportunities.</p>
                  </dd>
 
                  <dt class="col-sm-3">Long term</dt>
@@ -68,6 +75,9 @@
                             </ul>
                         </li>
                         <li>Motivated the team to redo the WeBSurg Project from scratch with new ideas, new coding standards and new technologies.
+                            <ul>
+                                <li>PHP7, Symfony3, MongoDB, Typescript, Webpack, Doctrine2</li>
+                            </ul>
                         </li>
                         <li>Went from a SaaS to <a href="https://scalingo.com/">a PaaS solution.</a></li>
                         <li>Created a TypeScript <a href="https://github.com/rugdealer/vimeo-upload/tree/chunk-upload">chunk upload library</a> for the video hosting platform we used (Vimeo).

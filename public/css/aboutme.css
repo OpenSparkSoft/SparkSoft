@@ -1,0 +1,10 @@
+#container {
+    background-color: rgba(194, 194, 194, .25);
+    padding: 2em;
+    margin-bottom: 1em;
+}
+
+#container section {
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
